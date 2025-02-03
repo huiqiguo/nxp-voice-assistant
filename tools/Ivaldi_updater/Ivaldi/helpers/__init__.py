@@ -1,0 +1,200 @@
+"""
+
+Copyright 2019-2021, 2024 NXP.
+
+NXP Confidential and Proprietary. This software is owned or controlled by NXP and may only be used strictly
+in accordance with the applicable license terms. By expressly accepting such terms or by downloading,
+installing, activating and/or otherwise using the software, you are agreeing that you have read, and
+that you agree to comply with and are bound by, such license terms. If you do not agree to be bound by
+the applicable license terms, then you may not retain, install, activate or otherwise use the software.
+
+File
+++++
+Ivaldi/helpers/__init__.py
+
+Brief
++++++
+** helper functions for Ivaldi **
+
+.. versionadded:: 0.0
+
+API
++++
+
+"""
+
+import os.path
+import platform
+import base64
+import binascii
+import math
+
+USB_TOOLS = ('sdphost', 'blhost')
+
+def long_int_to_bytearray(long_int):
+    """
+        Converts an integer into a bytearray
+
+        :param long_int: Integer to convert to bytearray
+        :type long_int: Integer
+
+        :returns: (bytearray) Byte array representation of integer
+    """
+    byte_arr = bytearray()
+    while long_int:
+        byte_arr.append(long_int & 0xFF)
+        long_int >>= 8
+    return byte_arr
+
+def encode_unique_id_to_hex(resp_list):
+    """
+        Encodes device unique ID into hex string
+
+        :param resp_list: List of hex strings that represent the unique ID, i.e, [0x1234ABCD, 0xABCD1234]
+        :type resp_list: List
+
+        :returns: (str) Hex string representation of unique ID
+    """
+    lwr = "{:08x}".format(resp_list[0])
+    upr = "{:08x}".format(resp_list[1])
+
+    return upr + lwr
+
+def encode_unique_id(resp_list):
+    """
+        Encodes device unique ID into base64 string
+
+        :param resp_list: List of hex strings that represent the unique ID, i.e, [0x1234ABCD, 0xABCD1234]
+        :type resp_list: List
+
+        :returns: (str) Base64 string representation of unique ID
+    """
+    lwr = hex(resp_list[0])[2:]
+    upr = hex(resp_list[1])[2:]
+    cmb = long_int_to_bytearray(int(upr + lwr, 16))
+    return str(base64.b64encode(cmb), 'ascii', 'strict')
+
+def prep_for_cloud_from_base64(inStr):
+    """
+        Modifies existing base64 input to be cloud friendly
+
+        :param inStr: base64 input string to format
+        :type inStr: String
+
+        :returns: (str) Cloud friendly encoded string
+    """
+
+    try:
+        # Test the string for base64 compatibility
+        base64.b64decode(inStr)
+
+        ret = ''
+        for c in inStr:
+            if c == '+':
+                ret += '_'
+            elif c == '/':
+                ret += '-'
+            elif c == '=':
+                break #Break loop here this character is padding and we can leave function
+            else:
+                ret += c
+
+        # Check if we had a padding character in an invalid place for single base64 string
+        if len(ret) < (len(inStr) - 2):
+            raise binascii.Error
+
+        return ret
+    except binascii.Error:
+        print("ERROR: Invalid base64 encoding on input string.")
+        return ''
+
+
+def bytes_to_word(resp_list, num_bytes):
+    """
+        Converts a list of bytes into a hexadecimal word string
+
+        :param resp_list: List of bytes, string hexadecimal without '0x' prefix
+        :type resp_list: List
+        :param num_bytes: Number of bytes to convert into a hex string
+        :type num_bytes: Integer
+
+        :returns: (str) Hexadecimal string representation of byte list with '0x' prefix
+    """
+    wrd = '0x'
+    idx = num_bytes - 1
+    while idx >= 0:
+        wrd += resp_list[idx]
+        idx -= 1
+    return wrd
+
+
+def swap_endian(byte_seq, num_bytes):
+    """
+    Function to extract and swap endianess
+    of num_bytes bytes of byte sequence
+
+    :param byte_seq: Input sequence of bytes
+    :param num_bytes: Number of bytes to swap and return
+
+    :returns: (bytearray) ret_seq
+
+    """
+    ret_seq = bytearray()
+    idx = num_bytes - 1
+    while idx >= 0:
+        ret_seq.append(byte_seq[idx])
+        idx -= 1
+    return ret_seq
+
+
+def isLinux():
+    """
+        Function to determine if executing on Linux platform
+
+        :returns: (boolean)
+    """
+    # Check for absence of Microsoft to avoid WSL
+    return 'Linux' == platform.system() and -1 == platform.release().find('Microsoft')
+
+
+def isWSL():
+    """
+        Function to determine if executing on Windows Subsystem for Linux
+
+        :returns: (boolean)
+    """
+    return 'Linux' == platform.system() and -1 < platform.release().find('Microsoft')
+
+def isWindows():
+    """
+        Function to determine if executing on Windows platform
+
+        :returns: (boolean)
+    """
+    return 'Windows' == platform.system()
+
+def useExe(prog_name):
+    """
+        Function to determine if need ".exe" suffix on programs
+
+        :returns: (boolean)
+    """
+    # Must use .exe for USB connection on WSL
+    return isWindows() or isWSL() and prog_name in USB_TOOLS
+
+def isMac():
+    """
+        Function to determine if executing on Macintosh platform
+
+        :returns: (boolean)
+    """
+    return 'Darwin' == platform.system()
+
+def script_dir():
+    """
+        Function to return path of directory containing file of presently executing script
+
+        :returns: (string) Real path to script directory
+    """
+
+    return os.path.dirname(os.path.realpath(__file__))
