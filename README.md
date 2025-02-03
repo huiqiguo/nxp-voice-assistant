@@ -62,7 +62,7 @@ This section summarises the commands that the pre-configured board can recognise
 - Music Playback: Start/play/stop/pause music, next/previous song
 - Volume Control: Increase/decrease/min/max volume, mute
 
-For a full list of expressions, refer to *VA\local_voice\S2I\en\VIT_Model_en_Audioplayer_expression.txt*.
+For a full list of expressions, refer to *VA\local_voice\S2I\en\VIT_Model_en_Audioplayer_expressions.txt*.
 
 ### 3. Barge-In Feature
 The pre-configured board comes with a barge-in feature, i.e. commands can be detected when audio is playing. If the wake word is detected when audio is playing, the audio will be temporarily paused and the LED on the board will light up in blue, indicating that the board is listening for the next command.
@@ -85,8 +85,8 @@ To start from scratch and follow the tutorials, import the "sln_svui_iot_local_d
 
 To build on the pre-configured project, import the "VA" folder instead. 
 
-Adding a new EN S2I model: https://github.com/nxp-appcodehub/rd-mcu-svui/tree/main/examples/S2I/example_0
-Adding a new EN VIT model: https://github.com/nxp-appcodehub/rd-mcu-svui/tree/main/examples/VIT/example_1
+Adding a new EN S2I model: https://github.com/nxp-appcodehub/rd-mcu-svui/tree/main/examples/S2I/example_0  
+Adding a new EN VIT model: https://github.com/nxp-appcodehub/rd-mcu-svui/tree/main/examples/VIT/example_1  
 Adding new audio prompts: https://github.com/nxp-appcodehub/rd-mcu-svui/tree/main/examples/VIT/example_4
 
 ### 2. Modifying the Welcome Announcement
