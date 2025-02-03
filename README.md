@@ -92,7 +92,7 @@ Adding new audio prompts: https://github.com/nxp-appcodehub/rd-mcu-svui/tree/mai
 ### 2. Modifying the Welcome Announcement
 - Follow this [example](https://github.com/nxp-appcodehub/rd-mcu-svui/tree/main/examples/VIT/example_4) to generate the opus file for your customised welcome announcement and add the new header line into your project under *source/sln_flash_files.h*.
 - If your project is built on the "sln_svui_iot_local_demo" folder, edit *local_voice/VIT/en.en_voice_demos_vit.h*. Add `AUDIO_WELCOME` (or whatever you defined the name as) instead of `NULL` to play the new welcome announcement prompt.
-``` 
+```c
 const sln_voice_demo_t test_demo_en =
 {
     ww_en,                          // wake word strings
@@ -112,7 +112,7 @@ const sln_voice_demo_t test_demo_en =
 };
 ```
 - If your project is built on the "VA" folder, edit *source/main.c*. Add `AUDIO_WELCOME` (or whatever you defined the name as) instead of `NULL` to play the new welcome announcement prompt.
-```
+```c
 static void announce_demo_s2i(uint16_t demo, uint32_t volume)
 {
     char *prompt = NULL;
@@ -129,7 +129,7 @@ static void announce_demo_s2i(uint16_t demo, uint32_t volume)
 - Ensure that your projct is built on the "VA" folder.
 - Follow this [example](https://github.com/nxp-appcodehub/rd-mcu-svui/tree/main/examples/VIT/example_4) to generate the opus files for your chosen songs and add the new header lines into your project under *source/sln_flash_files.h*.
 - Go to *source/app_layer_nxp_s2i.c*. Edit `NUM_SONGS` and `s_songsList` according to the audio files you have.
-```
+```c
 #define NUM_SONGS 4
 
 static char* s_songsList[NUM_SONGS] = {AUDIO_BIRDS_OF_A_FEATHER, AUDIO_BOHEMIAN_RHAPSODY, AUDIO_CANON_IN_D, AUDIO_TITANIUM};
@@ -141,7 +141,7 @@ static char* s_songsList[NUM_SONGS] = {AUDIO_BIRDS_OF_A_FEATHER, AUDIO_BOHEMIAN_
 - Rename the .bin file to have the prefix "sln_svui_iot_", e.g. sln_svui_iot_newproject.
 - Move the .bin file into the *tools/Ivaldi_updater/Image_Binaries* folder.
 - Update *tools/Ivaldi_updater/Scripts/sln_platforms_config/sln_svui_iot_config/board_config.py* to reflect the name of your .bin file.
-```
+```python
 MAIN_APP_NAME = 'newproject'
 ```
 - Ensure that the board is in serial downloader mode and run the FLASH_SVUI_BOARD.bat script to update the board.
