@@ -9,8 +9,8 @@ This project utilises the NXP i.MX RT106V board to develop a voice assistant too
 - USB Type-C cable.
 - J-link for flashing or debugging (should be included in the dev kit box).
 
-### 2. Download Python
-- Download from https://www.python.org/downloads/
+### 2. Download and Install Python
+- Download the installer from https://www.python.org/downloads/
 - Works with Python versions 3.6 to 3.10.
 - Open the installer, select "Add python.exe to PATH" and click "Install Now".
 
