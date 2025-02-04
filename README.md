@@ -12,6 +12,7 @@ This project utilises the NXP i.MX RT106V board to develop a voice assistant too
 ### 2. Download Python
 - Download from https://www.python.org/downloads/
 - Works with Python versions 3.6 to 3.10.
+- Open the installer, select "Add python.exe to PATH" and click "Install Now".
 
 ### 3. Set Up Virtual Environment and Install Ivaldi Package
 - Open Command Prompt and navigate to the tools\Ivaldi_updater directory.
