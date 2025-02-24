@@ -138,7 +138,7 @@ static char* s_songsList[NUM_SONGS] = {AUDIO_BIRDS_OF_A_FEATHER, AUDIO_BOHEMIAN_
 
 ### 4. Updating the Board
 - In *source/app.h*, it is good practice to update the application version (`APP_BLD_VER`) because it will be an easy way to check that the board was indeed updated, by calling the command `version` in the shell. 
-- Build the project in MCUXpresso, then generate a .bin file from the .axf file.
+- Build the project in MCUXpresso, then generate a .bin file from the .axf file by going to the */Debug* folder within your project -> right click the .axf file -> Binary Utilities -> Create binary.
 - Rename the .bin file to have the prefix "sln_svui_iot_", e.g. sln_svui_iot_newproject.
 - Move the .bin file into the *tools/Ivaldi_updater/Image_Binaries* folder.
 - Update *tools/Ivaldi_updater/Scripts/sln_platforms_config/sln_svui_iot_config/board_config.py* to reflect the name of your .bin file.
